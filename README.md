@@ -2,15 +2,6 @@
 
 Proyecto fullstack (React + Vite + Flask + SQLAlchemy) para gestionar un calendario de producción con categorías y vista especial de **MAQUILA**.
 
-## Estructura
-```
-CalendarioProduccion/
-├── calendarioproduccion/        # Frontend (React + Vite)
-│   └── src/                     # Código del frontend
-└── backend/                     # Backend (Flask API)
-```
-## Instalación
-
 ### Backend (Python)
 1. Instala Python 3.10+
 2. ```bash
