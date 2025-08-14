@@ -35,7 +35,7 @@ export default function MaquilaView(){
           <span className="badge"><span className="dot" style={{background:'#2563eb'}}></span>FLEXO</span>
           <span className="badge"><span className="dot" style={{background:'#f59e0b'}}></span>SUAJADORA</span>
           <span className="badge"><span className="dot" style={{background:'#16a34a'}}></span>ENTREGA</span>
-          <span className="badge"><span className="dot" style={{background:'#10b981'}}></span>RECIBOS MAQUILA</span>
+          <span className="badge"><span className="dot" style={{background:'aquamarine'}}></span>RECIBOS MAQUILA</span>
           <span className="badge"><span className="dot" style={{background:'#ef4444'}}></span>HEINZ</span>
         </div>
         <div style={{overflowX:'auto'}}>
