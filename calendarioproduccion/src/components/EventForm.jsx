@@ -2,22 +2,53 @@ import React, { useState, useEffect } from 'react'
 import { CATEGORY_OPTIONS } from '../data/categories'
 import api from '../api/client'
 
-export default function EventForm({ initial, onClose, onSaved, onDeleted }){
+export default function EventForm({ initial, onClose, onSaved, onDeleted, className = '' }){
   const [form, setForm] = useState(initial || {
-    title: '', category: 'MAQUILA', start: '', end: '', allDay: false, description: ''
+    title: '', category: 'MAQUILA', start: '', end: '', allDay: false, description: '', op: ''
   })
-  useEffect(() => { if(initial) setForm({ ...initial }) }, [initial])
+
+  useEffect(() => {
+    if(initial){
+      setForm({
+        title: initial.title || '',
+        category: initial.category || 'MAQUILA',
+        start: initial.start || '',
+        end: initial.end || '',
+        allDay: !!initial.allDay,
+        description: initial.description || '',
+        op: initial.op ?? '',
+        id: initial.id
+      })
+    }
+  }, [initial])
 
   function change(e){
-    const {name, value, type, checked} = e.target
-    setForm(f => ({...f, [name]: type === 'checkbox' ? checked : value }))
+    const { name, value, type, checked } = e.target
+    setForm(f => ({
+      ...f,
+      [name]: type === 'checkbox' ? checked : value
+    }))
   }
 
   async function save(e){
     e.preventDefault()
-    const payload = { ...form }
-    if(!payload.title || !payload.start) return alert('Título e inicio son obligatorios')
-    const res = form.id ? await api.put(`/events/${form.id}`, payload) : await api.post('/events', payload)
+
+    const payload = {
+      ...form,
+      op: form.op === '' ? null : Number(form.op)
+    }
+
+    if(!payload.title || !payload.start){
+      return alert('Título e inicio son obligatorios')
+    }
+    if(payload.op !== null && (Number.isNaN(payload.op) || payload.op < 0)){
+      return alert('OP debe ser un número válido (>= 0)')
+    }
+
+    const res = form.id
+      ? await api.put(`/events/${form.id}`, payload)
+      : await api.post('/events', payload)
+
     onSaved && onSaved(res.data)
   }
 
@@ -29,7 +60,7 @@ export default function EventForm({ initial, onClose, onSaved, onDeleted }){
   }
 
   return (
-    <div className="content-card" style={{marginBottom:'1rem'}}>
+    <div className={`content-card ${className}`} style={{marginBottom:'1rem'}}>
       <h3>{form.id ? 'Editar evento' : 'Nuevo evento'}</h3>
       <form onSubmit={save}>
         <div className="form-row">
@@ -44,6 +75,7 @@ export default function EventForm({ initial, onClose, onSaved, onDeleted }){
             </select>
           </div>
         </div>
+
         <div className="form-row">
           <div>
             <label>Inicio</label>
@@ -54,11 +86,35 @@ export default function EventForm({ initial, onClose, onSaved, onDeleted }){
             <input type="datetime-local" name="end" value={form.end || ''} onChange={change} />
           </div>
         </div>
+
+        <div className="form-row">
+          <div>
+            <label style={{display:'block', marginBottom: '.25rem'}}>Todo el día</label>
+            <label style={{display:'block'}}>
+              <input type="checkbox" name="allDay" checked={!!form.allDay} onChange={change}/> Todo el día
+            </label>
+          </div>
+
+          {/* Campo numérico OP */}
+          <div>
+            <label>OP (número)</label>
+            <input
+              type="number"
+              name="op"
+              inputMode="numeric"
+              min="0"
+              step="1"
+              value={form.op}
+              onChange={change}
+            />
+          </div>
+        </div>
+
         <div className="form-row-single">
-          <label><input type="checkbox" name="allDay" checked={!!form.allDay} onChange={change}/> Todo el día</label>
           <label>Descripción</label>
           <textarea name="description" value={form.description || ''} onChange={change} rows={3}></textarea>
         </div>
+
         <div className="actions">
           {form.id && <button type="button" className="btn" onClick={del}>Eliminar</button>}
           <button type="button" className="btn" onClick={onClose}>Cerrar</button>

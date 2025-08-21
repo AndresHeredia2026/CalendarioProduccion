@@ -41,3 +41,29 @@ a{ color:inherit; text-decoration:none; }
 input, select, textarea{ width:100%; padding:.5rem .75rem; border:1px solid var(--ring); border-radius:.5rem; background:#fff;}
 label{ font-size:.9rem; color:#374151; margin-bottom:.25rem; display:block;}
 .actions{ display:flex; gap:.5rem; justify-content:flex-end; }
+/* ---- NAVBAR: comportamiento móvil ---- */
+@media (max-width: 640px){
+  .navbar{ position: relative; top: 0; width: 100%; }
+  .nav-inner{
+    padding: .5rem .75rem;
+    gap: .5rem;
+    flex-wrap: wrap;          /* permite que los elementos bajen a otra línea */
+  }
+  .brand{
+    flex: 1 1 100%;
+    text-align: center;       /* marca centrada en móvil */
+    font-size: 1rem;
+  }
+  .navlink{
+    flex: 1 1 auto;
+    text-align: center;
+    padding: .5rem .6rem;
+    font-size: .9rem;
+  }
+  /* si usas logo con clase .topbar-logo */
+  .topbar-logo{
+    width: 36px; height: 36px; border-radius: 999px; object-fit: cover;
+    margin: 0 auto; display: block; /* centrado */
+  }
+  .container{ padding-left: .75rem; padding-right: .75rem; }
+}

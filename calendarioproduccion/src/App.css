@@ -1,1 +1,57 @@
-/* app css */
+/* Asegura que nada fuerce ancho mayor al contenedor */
+.content-card, .event-form, .event-form * { max-width: 100%; min-width: 0; }
+
+/* En pantallas pequeñas, el formulario pasa a 1 columna y todo ocupa el ancho */
+@media (max-width: 700px) {
+  .event-form .form-row {
+    grid-template-columns: 1fr; /* 👈 de 2 columnas a 1 */
+  }
+
+  /* Botones apilados y al 100% del ancho */
+  .event-form .actions {
+    flex-direction: column;
+    gap: .5rem;
+  }
+  .event-form .actions .btn,
+  .event-form .actions .btn-primary {
+    width: 100%;
+  }
+
+  /* Un poco menos de padding en tarjetas para no “reventar” el ancho */
+  .content-card { padding: .75rem; }
+}
+
+/* Opcional: evita scroll horizontal en el calendario cuando está bajo el formulario */
+.fc .fc-scroller {
+  overflow: visible; /* que el alto crezca sin barras laterales */
+}
+/* ===== Header minimal como el de tu calendario de referencia ===== */
+.cal-minihead{
+  display:flex;
+  align-items:center;
+  gap:.4rem;
+  margin: .25rem 0 .75rem;
+}
+.cal-minihead__title{
+  color:#2563eb;           /* azul tipo enlace */
+  font-weight:600;
+  letter-spacing:.2px;
+  user-select:none;
+  text-transform:uppercase; /* AGOSTO 2025 */
+}
+.cal-minihead__arrow{
+  background:transparent;
+  border:0;
+  padding:.15rem .35rem;
+  font-size:18px;          /* flecha pequeña */
+  line-height:1;
+  color:#374151;
+  border-radius:6px;
+  cursor:pointer;
+}
+.cal-minihead__arrow:hover{ background:#f3f4f6; }
+
+/* Responsive: el título puede saltar de línea si hace falta */
+@media (max-width: 640px){
+  .cal-minihead{ flex-wrap:wrap; }
+}

@@ -42,7 +42,7 @@ export default function MaquilaView(){
           <table style={{width:'100%', borderCollapse:'collapse', marginTop:'1rem'}}>
             <thead>
               <tr>
-                {['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'].map(h => (
+                {['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'].map(h => (
                   <th key={h} style={{textAlign:'left', padding:'.5rem', border:'1px solid #e5e7eb', background:'#f9fafb'}}>{h}</th>
                 ))}
               </tr>
