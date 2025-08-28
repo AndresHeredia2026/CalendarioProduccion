@@ -10,49 +10,49 @@ import EventForm from '../components/EventForm'
 import api from '../api/client'
 import { CATEGORY_COLORS } from '../data/categories'
 
-export default function CalendarPage(){
+export default function CalendarPage() {
   const ref = useRef(null)
   const [events, setEvents] = useState([])
   const [editing, setEditing] = useState(null)
   const [showForm, setShowForm] = useState(false)
   const [title, setTitle] = useState('')
 
-  async function load(){
+  async function load() {
     const res = await api.get('/events')
     setEvents(
       res.data.map(e => ({
         ...e,
         backgroundColor: CATEGORY_COLORS[e.category] || '#64748b',
-        borderColor:    CATEGORY_COLORS[e.category] || '#64748b'
+        borderColor: CATEGORY_COLORS[e.category] || '#64748b'
       }))
     )
   }
   useEffect(() => { load() }, [])
 
-  function handleAction(action){
+  function handleAction(action) {
     const apiCal = ref.current?.getApi()
-    if(!apiCal) return
-    if(action === 'new'){ setEditing(null); setShowForm(true); return }
-    if(action === 'today') apiCal.today()
+    if (!apiCal) return
+    if (action === 'new') { setEditing(null); setShowForm(true); return }
+    if (action === 'today') apiCal.today()
     else apiCal.changeView(action)
   }
 
-  function dateSelect(arg){
+  function dateSelect(arg) {
     setEditing({
-      start: arg.startStr.slice(0,16),
-      end: arg.endStr.slice(0,16),
+      start: arg.startStr.slice(0, 16),
+      end: arg.endStr.slice(0, 16),
       op: ''
     })
     setShowForm(true)
   }
 
-  function eventClick(info){
+  function eventClick(info) {
     const e = info.event
     setEditing({
       id: e.id,
       title: e.title,
-      start: e.startStr.slice(0,16),
-      end: e.endStr ? e.endStr.slice(0,16) : '',
+      start: e.startStr.slice(0, 16),
+      end: e.endStr ? e.endStr.slice(0, 16) : '',
       allDay: e.allDay,
       category: e.extendedProps.category,
       description: e.extendedProps.description || '',
@@ -61,11 +61,11 @@ export default function CalendarPage(){
     setShowForm(true)
   }
 
-  async function handleSaved(){
+  async function handleSaved() {
     setShowForm(false)
     await load()
   }
-  async function handleDeleted(){
+  async function handleDeleted() {
     setShowForm(false)
     await load()
   }
@@ -73,21 +73,21 @@ export default function CalendarPage(){
   // Flechas (mes; con Alt: año)
   const goPrev = (e) => {
     const api = ref.current?.getApi()
-    if(!api) return
+    if (!api) return
     e?.altKey ? api.prevYear() : api.prev()
   }
   const goNext = (e) => {
     const api = ref.current?.getApi()
-    if(!api) return
+    if (!api) return
     e?.altKey ? api.nextYear() : api.next()
   }
 
   return (
     <div className="container">
       <div className="legend">
-        {Object.entries(CATEGORY_COLORS).map(([k,v]) => (
+        {Object.entries(CATEGORY_COLORS).map(([k, v]) => (
           <span key={k} className="badge">
-            <span className="dot" style={{background:v}}></span>{k}
+            <span className="dot" style={{ background: v }}></span>{k}
           </span>
         ))}
       </div>
